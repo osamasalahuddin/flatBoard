@@ -1,106 +1,150 @@
-         
-//Add the SPI library so we can communicate with the ADXL345 sensor
-#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_ADXL345_U.h>
 
-/*  Assign the Chip Select signal to pin 10. */
-int CS=10;
+/* Assign a unique ID to this sensor at the same time */
+Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 
-/*  This is a list of some of the registers available on the ADXL345.
-    To learn more about these and the rest of the registers on the ADXL345, read the datasheet! */
-
-char POWER_CTL = 0x2D;    //Power Control Register
-char DATA_FORMAT = 0x31;
-char DATAX0 = 0x32;   //X-Axis Data 0
-char DATAX1 = 0x33;   //X-Axis Data 1
-char DATAY0 = 0x34;   //Y-Axis Data 0
-char DATAY1 = 0x35;   //Y-Axis Data 1
-char DATAZ0 = 0x36;   //Z-Axis Data 0
-char DATAZ1 = 0x37;   //Z-Axis Data 1
-
-//This buffer will hold values read from the ADXL345 registers.
-char values[10];
-//These variables will be used to hold the x,y and z axis accelerometer values.
-int x,y,z;
-
-void setup()
-{ 
-  //Initiate an SPI communication instance.
-  SPI.begin();
-  //Configure the SPI connection for the ADXL345.
-  SPI.setDataMode(SPI_MODE3);
-  //Create a serial connection to display the data on the terminal.
-  Serial.begin(9600);
-  
-  //Set up the Chip Select pin to be an output from the Arduino.
-  pinMode(CS, OUTPUT);
-  //Before communication starts, the Chip Select pin needs to be set high.
-  digitalWrite(CS, HIGH);
-  
-  //Put the ADXL345 into +/- 4G range by writing the value 0x01 to the DATA_FORMAT register.
-  writeRegister(DATA_FORMAT, 0x01);
-  //Put the ADXL345 into Measurement Mode by writing 0x08 to the POWER_CTL register.
-  writeRegister(POWER_CTL, 0x08);  //Measurement mode  
-}
-
-void loop() 
+void displaySensorDetails(void)
 {
-  /*  Reading 6 bytes of data starting at register DATAX0 will retrieve the x,y and z acceleration values from the ADXL345.
-      The results of the read operation will get stored to the values[] buffer. */
-  readRegister(DATAX0, 6, values);
-
-  //The ADXL345 gives 10-bit acceleration values, but they are stored as bytes (8-bits). To get the full value, two bytes must be combined for each axis.
-  //The X value is stored in values[0] and values[1].
-  x = ((int)values[1]<<8)|(int)values[0];
-  //The Y value is stored in values[2] and values[3].
-  y = ((int)values[3]<<8)|(int)values[2];
-  //The Z value is stored in values[4] and values[5].
-  z = ((int)values[5]<<8)|(int)values[4];
-  
-  //Print the results to the terminal.
-  Serial.print(x, DEC);
-  Serial.print(',');
-  Serial.print(y, DEC);
-  Serial.print(',');
-  Serial.println(z, DEC);      
-
-  /* For Now considering only linear motion along X axis */
-  
-  delay(10); 
+  sensor_t sensor;
+  accel.getSensor(&sensor);
+  Serial.println("------------------------------------");
+  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" m/s^2");
+  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" m/s^2");
+  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" m/s^2");  
+  Serial.println("------------------------------------");
+  Serial.println("");
+  delay(500);
 }
 
-//This function will write a value to a register on the ADXL345.
-//Parameters:
-//  char registerAddress - The register to write a value to
-//  char value - The value to be written to the specified register.
-void writeRegister(char registerAddress, char value){
-  //Set Chip Select pin low to signal the beginning of an SPI packet.
-  digitalWrite(CS, LOW);
-  //Transfer the register address over SPI.
-  SPI.transfer(registerAddress);
-  //Transfer the desired register value over SPI.
-  SPI.transfer(value);
-  //Set the Chip Select pin high to signal the end of an SPI packet.
-  digitalWrite(CS, HIGH);
+void displayDataRate(void)
+{
+  Serial.print  ("Data Rate:    "); 
+  
+  switch(accel.getDataRate())
+  {
+    case ADXL345_DATARATE_3200_HZ:
+      Serial.print  ("3200 "); 
+      break;
+    case ADXL345_DATARATE_1600_HZ:
+      Serial.print  ("1600 "); 
+      break;
+    case ADXL345_DATARATE_800_HZ:
+      Serial.print  ("800 "); 
+      break;
+    case ADXL345_DATARATE_400_HZ:
+      Serial.print  ("400 "); 
+      break;
+    case ADXL345_DATARATE_200_HZ:
+      Serial.print  ("200 "); 
+      break;
+    case ADXL345_DATARATE_100_HZ:
+      Serial.print  ("100 "); 
+      break;
+    case ADXL345_DATARATE_50_HZ:
+      Serial.print  ("50 "); 
+      break;
+    case ADXL345_DATARATE_25_HZ:
+      Serial.print  ("25 "); 
+      break;
+    case ADXL345_DATARATE_12_5_HZ:
+      Serial.print  ("12.5 "); 
+      break;
+    case ADXL345_DATARATE_6_25HZ:
+      Serial.print  ("6.25 "); 
+      break;
+    case ADXL345_DATARATE_3_13_HZ:
+      Serial.print  ("3.13 "); 
+      break;
+    case ADXL345_DATARATE_1_56_HZ:
+      Serial.print  ("1.56 "); 
+      break;
+    case ADXL345_DATARATE_0_78_HZ:
+      Serial.print  ("0.78 "); 
+      break;
+    case ADXL345_DATARATE_0_39_HZ:
+      Serial.print  ("0.39 "); 
+      break;
+    case ADXL345_DATARATE_0_20_HZ:
+      Serial.print  ("0.20 "); 
+      break;
+    case ADXL345_DATARATE_0_10_HZ:
+      Serial.print  ("0.10 "); 
+      break;
+    default:
+      Serial.print  ("???? "); 
+      break;
+  }  
+  Serial.println(" Hz");  
 }
 
-//This function will read a certain number of registers starting from a specified address and store their values in a buffer.
-//Parameters:
-//  char registerAddress - The register addresse to start the read sequence from.
-//  int numBytes - The number of registers that should be read.
-//  char * values - A pointer to a buffer where the results of the operation should be stored.
-void readRegister(char registerAddress, int numBytes, char * values){
-  //Since we're performing a read operation, the most significant bit of the register address should be set.
-  char address = 0x80 | registerAddress;
-  //If we're doing a multi-byte read, bit 6 needs to be set as well.
-  if(numBytes > 1)address = address | 0x40;
+void displayRange(void)
+{
+  Serial.print  ("Range:         +/- "); 
   
-  //Set the Chip select pin low to start an SPI packet.
-  digitalWrite(CS, LOW);
-  //Transfer the starting register address that needs to be read.
-  SPI.transfer(address);
-  //Continue to read registers until we've read the number specified, storing the results to the input buffer.
-  //int  SPI.transfer(0x00);
+  switch(accel.getRange())
+  {
+    case ADXL345_RANGE_16_G:
+      Serial.print  ("16 "); 
+      break;
+    case ADXL345_RANGE_8_G:
+      Serial.print  ("8 "); 
+      break;
+    case ADXL345_RANGE_4_G:
+      Serial.print  ("4 "); 
+      break;
+    case ADXL345_RANGE_2_G:
+      Serial.print  ("2 "); 
+      break;
+    default:
+      Serial.print  ("?? "); 
+      break;
+  }  
+  Serial.println(" g");  
+}
+
+void setup(void) 
+{
+
+  Serial.begin(9600);
+  Serial.println("Accelerometer Test"); Serial.println("");
   
-  //Set the Chips Select pin high to end the SPI packet.
-  digitalWrite(CS, HIGH);
+  /* Initialise the sensor */
+  if(!accel.begin())
+  {
+    /* There was a problem detecting the ADXL345 ... check your connections */
+    Serial.println("Ooops, no ADXL345 detected ... Check your wiring!");
+    while(1);
+  }
+
+  /* Set the range to whatever is appropriate for your project */
+  accel.setRange(ADXL345_RANGE_16_G);
+  // displaySetRange(ADXL345_RANGE_8_G);
+  // displaySetRange(ADXL345_RANGE_4_G);
+  // displaySetRange(ADXL345_RANGE_2_G);
+  
+  /* Display some basic information on this sensor */
+  displaySensorDetails();
+  
+  /* Display additional settings (outside the scope of sensor_t) */
+  displayDataRate();
+  displayRange();
+  Serial.println("");
+}
+
+void loop(void) 
+{
+  /* Get a new sensor event */ 
+  sensors_event_t event; 
+  accel.getEvent(&event);
+ 
+  /* Display the results (acceleration is measured in m/s^2) */
+  Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
+  Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
+  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  delay(500);
 }
