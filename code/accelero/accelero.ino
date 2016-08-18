@@ -138,13 +138,29 @@ void setup(void)
 
 void loop(void) 
 {
+  static int prev_x = 0;
+  static int print_cnt = 0;
   /* Get a new sensor event */ 
   sensors_event_t event; 
   accel.getEvent(&event);
- 
-  /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
-  Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
-  delay(500);
+  if (event.acceleration.x > prev_x)
+  {
+    prev_x = event.acceleration.x;
+    analogWrite(13,255);  
+  }
+  else 
+  {
+    analogWrite(13,0);
+  }
+
+  if (print_cnt++ == 10)
+  {
+    /* Display the results (acceleration is measured in m/s^2) */
+    print_cnt = 0;
+    Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
+    Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
+    Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  }
+  delay(50);
+  
 }
