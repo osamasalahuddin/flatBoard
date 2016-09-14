@@ -2,6 +2,11 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL345_U.h>
 
+#define PWM_LED         9
+#define BREAK_BRIGHT    255
+#define NORMAL_BRIGHT   150
+
+
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 
@@ -138,13 +143,29 @@ void setup(void)
 
 void loop(void) 
 {
+  static int prev_x = 0;
+  static int print_cnt = 0;
   /* Get a new sensor event */ 
   sensors_event_t event; 
   accel.getEvent(&event);
- 
-  /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
-  Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
-  delay(500);
+  if (event.acceleration.x < 0)
+  {
+    prev_x = event.acceleration.x;
+    analogWrite(PWM_LED,BREAK_BRIGHT);  
+  }
+  else 
+  {
+    analogWrite(PWM_LED,NORMAL_BRIGHT);
+  }
+
+  if (print_cnt++ == 10)
+  {
+    /* Display the results (acceleration is measured in m/s^2) */
+    print_cnt = 0;
+    Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
+    Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
+    Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  }
+  delay(50);
+  
 }
