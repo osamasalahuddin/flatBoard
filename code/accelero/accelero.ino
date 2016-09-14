@@ -2,6 +2,11 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL345_U.h>
 
+#define PWM_LED         9
+#define BREAK_BRIGHT    255
+#define NORMAL_BRIGHT   150
+
+
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 
@@ -143,14 +148,14 @@ void loop(void)
   /* Get a new sensor event */ 
   sensors_event_t event; 
   accel.getEvent(&event);
-  if (event.acceleration.x > prev_x)
+  if (event.acceleration.x < 0)
   {
     prev_x = event.acceleration.x;
-    analogWrite(13,255);  
+    analogWrite(PWM_LED,BREAK_BRIGHT);  
   }
   else 
   {
-    analogWrite(13,0);
+    analogWrite(PWM_LED,NORMAL_BRIGHT);
   }
 
   if (print_cnt++ == 10)
