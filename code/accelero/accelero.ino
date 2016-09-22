@@ -4,7 +4,7 @@
 
 #define PWM_LED         9
 #define BREAK_BRIGHT    255
-#define NORMAL_BRIGHT   150
+#define NORMAL_BRIGHT   50
 
 
 /* Assign a unique ID to this sensor at the same time */

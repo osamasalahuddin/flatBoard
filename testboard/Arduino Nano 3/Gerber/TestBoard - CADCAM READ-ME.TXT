@@ -1,0 +1,50 @@
+LABCENTER PROTEUS TOOL INFORMATION FILE
+=======================================
+
+In case of difficulty, please e-mail support@labcenter.co.uk
+
+Tool set up for Proteus layout 'aruino_nano.pdsprj'.
+CADCAM generated at 12:09:25 AM on Friday, September 23, 2016.
+
+File List
+---------
+Top Copper              : TestBoard - CADCAM Top Copper.TXT
+Bottom Copper           : TestBoard - CADCAM Bottom Copper.TXT
+Top Silk Screen         : TestBoard - CADCAM Top Silk Screen.TXT
+Top Solder Resist       : TestBoard - CADCAM Top Solder Resist.TXT
+Bottom Solder Resist    : TestBoard - CADCAM Bottom Solder Resist.TXT
+Top SMT Paste Mask      : TestBoard - CADCAM Top SMT Paste Mask.TXT
+Mechanical 1            : TestBoard - CADCAM Mechanical 1.TXT
+Drill                   : TestBoard - CADCAM Drill.TXT
+
+Photoplotter Setup
+------------------
+Format: RS274X, ASCII, 2.4, imperial, absolute, eob=*, LZO
+Notes:  D=Diameter, S=Side, W=Width, H=Height, C=Chamfer
+
+D10	CIRCLE  D=10th                                                            DRAW
+D11	CIRCLE  D=20th                                                            DRAW
+D12	CIRCLE  D=2.5th                                                           DRAW
+D13	SQUARE  S=80th                                                            FLASH
+D14	RECT    W=71th                H=49th                                      FLASH
+D15	CIRCLE  D=50th                                                            FLASH
+D16	RECT    W=50th                H=100th                                     FLASH
+D17	CIRCLE  D=90th                                                            FLASH
+D18	RECT    W=40th                H=50th                                      FLASH
+D19	CIRCLE  D=8th                                                             DRAW
+D70	CIRCLE  D=9.8th                                                           DRAW
+D71	CIRCLE  D=7.8th                                                           DRAW
+D20	CIRCLE  D=2.4th                                                           DRAW
+D21	CIRCLE  D=60th                                                            FLASH
+D22	CIRCLE  D=100th                                                           FLASH
+
+NC Drill Setup
+--------------
+Format: ASCII, 2.4, imperial, absolute, eob=<CR><LF>, no zero suppression.
+Notes:  Tool sizes are diameters. Layer sets are in brackets - 0=TOP, 15=BOTTOM, 1-14=INNER.
+
+T01	40th (0-15) Plated
+T02	30th (0-15) Plated
+
+
+[END OF FILE]
