@@ -1,0 +1,57 @@
+LABCENTER PROTEUS TOOL INFORMATION FILE
+=======================================
+
+In case of difficulty, please e-mail support@labcenter.co.uk
+
+Tool set up for Proteus layout 'schematic_pro.pdsprj'.
+CADCAM generated at 12:16:46 AM on Friday, September 23, 2016.
+
+File List
+---------
+Top Copper              : Gerber_final_board - CADCAM Top Copper.TXT
+Bottom Copper           : Gerber_final_board - CADCAM Bottom Copper.TXT
+Top Silk Screen         : Gerber_final_board - CADCAM Top Silk Screen.TXT
+Top Solder Resist       : Gerber_final_board - CADCAM Top Solder Resist.TXT
+Bottom Solder Resist    : Gerber_final_board - CADCAM Bottom Solder Resist.TXT
+Top SMT Paste Mask      : Gerber_final_board - CADCAM Top SMT Paste Mask.TXT
+Mechanical 1            : Gerber_final_board - CADCAM Mechanical 1.TXT
+Drill                   : Gerber_final_board - CADCAM Drill.TXT
+
+Photoplotter Setup
+------------------
+Format: RS274X, ASCII, 2.4, imperial, absolute, eob=*, LZO
+Notes:  D=Diameter, S=Side, W=Width, H=Height, C=Chamfer
+
+D10	CIRCLE  D=10th                                                            DRAW
+D11	CIRCLE  D=30th                                                            FLASH
+D12	CIRCLE  D=2.5th                                                           DRAW
+D13	RECT    W=59th                H=22th                                      FLASH
+D14	RECT    W=22th                H=59th                                      FLASH
+D15	SQUARE  S=80th                                                            FLASH
+D16	CIRCLE  D=80th                                                            FLASH
+D17	CIRCLE  D=50th                                                            FLASH
+D18	RECT    W=49th                H=71th                                      FLASH
+D19	RECT    W=45th                H=57th                                      FLASH
+D70	RECT    W=40th                H=50th                                      FLASH
+D71	CIRCLE  D=90th                                                            FLASH
+D20	RECT    W=50th                H=100th                                     FLASH
+D21	CIRCLE  D=8th                                                             DRAW
+D22	CIRCLE  D=7.8th                                                           DRAW
+D23	CIRCLE  D=23.6th                                                          DRAW
+D24	CIRCLE  D=9.8th                                                           DRAW
+D25	CIRCLE  D=40th                                                            FLASH
+D26	CIRCLE  D=2.4th                                                           DRAW
+D27	CIRCLE  D=60th                                                            FLASH
+D28	CIRCLE  D=100th                                                           FLASH
+
+NC Drill Setup
+--------------
+Format: ASCII, 2.4, imperial, absolute, eob=<CR><LF>, no zero suppression.
+Notes:  Tool sizes are diameters. Layer sets are in brackets - 0=TOP, 15=BOTTOM, 1-14=INNER.
+
+T01	15th (0-15) Plated
+T02	40th (0-15) Plated
+T03	30th (0-15) Plated
+
+
+[END OF FILE]
